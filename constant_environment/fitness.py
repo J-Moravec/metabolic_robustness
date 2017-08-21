@@ -1,6 +1,12 @@
+# metabolic_robustness/constant_environment/fitness.py
+
+import attr
+from metabolic_robustness.constant_environment.environment import Environment
 from scipy.stats import truncnorm
 from math import sqrt
 
+
+@attr.attrs
 class Fitness(object):
     """
     This class represent cell's fitness. All information and methods regarding
@@ -13,13 +19,26 @@ class Fitness(object):
     value of environment.
     """
 
-    def __init__(self, mean, var, environment):
-        this.mean = mean
-        this.var = var
-        this.environment = environment
+    mean = attr.attrib(
+        default = 50
+        )
+    var = attr.attrib(
+        default = 1
+        )
+    environment = attr.attrib(
+        default = attr.Factory(Environment),
+        validator = attr.validators.instance_of(Environment)
+        )
 
 
     def fitness(self):
-        a = (environment.min - mean) / sqrt(var)
-        b = (environment.max - mean) / sqrt(var)
-        truncnorm(a,b)
+        a = (self.environment.min - self.mean) / sqrt(self.var)
+        b = (self.environment.max - self.mean) / sqrt(self.var)
+        val = truncnorm.pdf(
+            self.environment.current,
+            a,
+            b,
+            loc=self.mean,
+            scale=self.var
+            )
+        return(val)

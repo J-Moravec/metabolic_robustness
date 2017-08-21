@@ -1,6 +1,7 @@
+# metabolic_robustnest/constant_environment/environment.py
+
 import attr
 import random
-
 
 @attr.attrs
 class Environment(object):
@@ -11,16 +12,12 @@ class Environment(object):
     In the case of constant_environment, these cannot be changed.
     """
     min = attr.attrib(
-        default=0,
-        frozen=True,
-        validator = attr.validators.instance_of((int, float))
+        default = 0
         )
     max = attr.attrib(
-        default=100,
-        frozen=True,
-        validator = attr.validators.instance_of((int, float))
+        default = 100
         )
-    current = attr.atrrib()
+    current = attr.attrib()
 
 
     @current.default

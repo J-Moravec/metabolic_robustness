@@ -1,18 +1,27 @@
-#from metabolic_robustness.constant_environment.fitness import Fitness
+# metabolic_robustness/constant_environment/cell.py
 
+import attr
+from metabolic_robustness.constant_environment.fitness import Fitness
+from metabolic_robustness.constant_environment.mutation import Mutation
+
+@attr.attrs
 class Cell(object):
     """
     TODO
 
 
     """
-    def __init__(self, fitness, mutation, environment):
-        self.fitness = fitness
-        self.mutation = mutation
-        self.environment = environment
+    fitness = attr.attrib(
+        default = attr.Factory(Fitness),
+        validator = attr.validators.instance_of(Fitness)
+        )
+    mutation = attr.attrib(
+        default = attr.Factory(Mutation),
+        validator = attr.validators.instance_of(Mutation)
+        )
 
-    def fitness(self, environment):
-        return self.fitness(environment)
+    def get_fitness(self):
+        return self.fitness.fitness()
 
     def mutate(self):
-        this.mutation()
+        this.mutation.mutate()
