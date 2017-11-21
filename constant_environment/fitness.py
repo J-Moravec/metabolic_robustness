@@ -1,10 +1,7 @@
 # metabolic_robustness/constant_environment/fitness.py
 
 import attr
-from metabolic_robustness.constant_environment.environment import Environment
-from scipy.stats import truncnorm
-from math import sqrt
-
+from metabolic_robustness.utils.normdist import truncnorm_pdf
 
 @attr.attrs
 class Fitness(object):
@@ -25,20 +22,13 @@ class Fitness(object):
     var = attr.attrib(
         default = 1
         )
-    environment = attr.attrib(
-        default = attr.Factory(Environment),
-        validator = attr.validators.instance_of(Environment)
-        )
 
-
-    def fitness(self):
-        a = (self.environment.min - self.mean) / sqrt(self.var)
-        b = (self.environment.max - self.mean) / sqrt(self.var)
-        val = truncnorm.pdf(
-            self.environment.current,
-            a,
-            b,
-            loc=self.mean,
-            scale=self.var
+    def fitness(self, environment):
+        val = truncnorm_pdf(
+            environment.current,
+            self.mean,
+            self.var,
+            environment.min,
+            environment.max
             )
         return(val)
